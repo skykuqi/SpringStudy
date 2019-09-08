@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <bean id="knight" class="knights.BraveKnight">
+        <!--将id为quest的bean注入到knight中-->
+        <constructor-arg ref="quest"/>
+    </bean>
+
+    <bean id="quest" class="knights.SlayDragonQuest">
+        <constructor-arg value="#{T(System).out}"/>
+    </bean>
+    <bean id="minstrel" class="knights.Minstrel">
+    </bean>
+    <aop:config>
+        <!--定义切点-->
+        <aop:aspect ref="minstrel">
+            <aop:pointcut id="emback" expression="execution(* *.embarkOnQuest(..))"/>
+            <!--定义前置通知-->
+            <aop:before method="singBeforeQuest" pointcut-ref="emback"/>
+            <!--定义后置通知-->
+            <aop:after method="singAfterQuest" pointcut-ref="emback"/>
+        </aop:aspect>
+    </aop:config>
+</beans>

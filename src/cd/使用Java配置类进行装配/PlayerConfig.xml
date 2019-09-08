@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--引入XML配置文件-->
+    <!--    <import resource="PlayerConfig.xml"/>-->
+    <!--为确保成功,我们需要开启注解配置的支持-->
+    <context:annotation-config/>
+    <!--引入JavaConfig配置文件-->
+    <bean class="cd.使用Java配置类进行装配.PlayerConfig"/>
+    <!--进行bean的装配-->
+    <util:list id="musicList">
+        <value>第一首歌曲</value>
+        <value>第二首歌曲</value>
+        <value>第三首歌曲</value>
+        <value>第四首歌曲</value>
+        <value>最厉害的歌曲:我爱Java</value>
+    </util:list>
+    <bean id="myDVD" class="cd.使用Java配置类进行装配.MyDVD"
+          p:title="歌曲串烧" p:time="120" p:musicList-ref="musicList">
+    </bean>
+</beans>

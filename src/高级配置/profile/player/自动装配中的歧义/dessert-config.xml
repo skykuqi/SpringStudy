@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--引入外部属性文件-->
+    <context:property-placeholder location="classpath:高级配置/profile/player/自动装配中的歧义/dessert.properties"/>
+    <bean id="cake" class="高级配置.profile.player.自动装配中的歧义.Cake" primary="true">
+        <constructor-arg value="#{T(Math).PI}"/>
+    </bean>
+    <bean id="cookies" class="高级配置.profile.player.自动装配中的歧义.Cookies"/>
+    <bean id="iceCream" class="高级配置.profile.player.自动装配中的歧义.IceCream" scope="prototype"/>
+</beans>
