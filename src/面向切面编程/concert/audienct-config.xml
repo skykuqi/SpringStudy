@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:c="http://www.springframework.org/schema/c" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+    <!--开启AspectJ动态代理-->
+    <aop:aspectj-autoproxy/>
+    <bean class="面向切面编程.concert.Audience" c:name="小明" id="audience"/>
+    <util:list id="dancingList">
+        <value>芭蕾舞表演</value>
+        <value>孔雀舞表演</value>
+        <value>名族舞表演</value>
+        <value>花式敲代码表演</value>
+    </util:list>
+    <bean class="面向切面编程.concert.DancingPerformance" id="performance"/>
+    <bean class="面向切面编程.concert.Host" id="host">
+        <property name="dancingList" ref="dancingList"/>
+    </bean>
+    <bean class="面向切面编程.concert.PointcutForMore" id="forMore"/>
+
+    <aop:config>
+        <aop:pointcut id="pointcut" expression="execution(* *.concert.Performance.perform(..))"/>
+        <aop:pointcut id="pointcutWithParam"
+                      expression="execution(* *.concret.Performance.perform(..)) and args(index,name)"/>
+        <aop:aspect ref="audience">
+            <!--  <aop:before method="silenceCellPhone" pointcut-ref="pointcut"/>
+             <aop:before method="takeSeats" pointcut-ref="pointcut"/>
+             <aop:after-returning method="applause" pointcut-ref="pointcut"/>
+             <aop:after-throwing method="demandRefund" pointcut-ref="pointcut"/>-->
+            <aop:around method="watchPerform" pointcut-ref="pointcut"/>
+        </aop:aspect>
+        <aop:aspect ref="host">
+            <!--注意在XML中不应该使用&& 而应该使用关键字and-->
+            <aop:before method="host" pointcut-ref="pointcutWithParam" arg-names="index,name"/>
+
+        </aop:aspect>
+        <aop:aspect ref="forMore">
+            <aop:declare-parents types-matching="面向切面编程.concert.Performance+"
+                                 implement-interface="面向切面编程.concert.MoreForPerformance"
+                                 default-impl="面向切面编程.concert.MoreForPerformanceImpl"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
